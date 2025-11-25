@@ -28,7 +28,9 @@ export default function Home() {
         <div className="layout">
           {/* Colonne gauche : CTA */}
           <div className="cta-group">
-            <a href="#early-access" className="btn-primary">
+            <a href="/dashboard" className="mt-8 bg-red-600 px-6 py-3 rounded-full text-lg font-semibold hover:bg-red-700 transition">
+  Accéder au dashboard (pré-version)
+</a>
               Demander un accès anticipé
             </a>
             <button className="btn-secondary">
