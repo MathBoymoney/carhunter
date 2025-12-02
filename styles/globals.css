@@ -1,18 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+import "../styles/globals.css";
 
-/* Style global du site CarHunter */
-
-body {
-  @apply bg-black text-white antialiased;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} />;
 }
 
-a {
-  @apply text-red-500;
-}
-
-button {
-  @apply cursor-pointer;
-}
+export default MyApp;
