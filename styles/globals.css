@@ -1,253 +1,43 @@
-* {
-  box-sizing: border-box;
+body {
   margin: 0;
   padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #050505;
-  color: #ffffff;
-}
-
-.main {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.card {
+.container {
   max-width: 900px;
-  width: 100%;
-  background: #111111;
-  border-radius: 24px;
-  border: 1px solid rgba(230, 0, 35, 0.3);
-  padding: 32px 28px;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+  margin: 40px auto;
+  padding: 40px;
+  background: #0d0d0d;
+  border: 1px solid #ff0000;
+  border-radius: 20px;
 }
 
-.badge-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  background: #e60023;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-}
-
-.logo-text {
-  font-weight: 600;
-}
-
-.logo-sub {
-  font-size: 12px;
-  opacity: 0.7;
-}
-
-.badge {
-  font-size: 11px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.title {
-  font-size: 32px;
+h1 {
+  font-size: 42px;
   font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 12px;
 }
 
-.title span.red {
-  color: #e60023;
+h1 span {
+  color: #ff0000;
 }
 
-.subtitle {
-  font-size: 15px;
-  opacity: 0.8;
-  margin-bottom: 24px;
-  max-width: 480px;
-}
-
-.main-row {
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-}
-
-.left,
-.right {
-  flex: 1;
-}
-
-.btn-primary {
-  background: #e60023;
-  color: white;
-  border: none;
-  border-radius: 999px;
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 12px;
+button {
   width: 100%;
-}
-
-.btn-primary:hover {
-  background: #ff1637;
-}
-
-.btn-secondary {
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: transparent;
-  color: white;
-  padding: 10px 18px;
-  font-size: 13px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.bullets {
-  margin-top: 18px;
-  font-size: 13px;
-  list-style: none;
-}
-
-.bullets li {
-  margin-bottom: 8px;
-}
-
-.bullets li::before {
-  content: "• ";
-  color: #e60023;
-}
-
-.right-card {
-  background: #151515;
-  border-radius: 18px;
-  padding: 18px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 13px;
-}
-
-.right-title {
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.right-sub {
-  font-size: 11px;
-  opacity: 0.7;
-  margin-bottom: 12px;
-}
-
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 6px;
-}
-
-.stat-label {
-  opacity: 0.75;
-}
-
-.stat-value {
-  font-weight: 600;
-}
-
-.form-block {
-  margin-top: 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 14px;
-}
-
-.form-title {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.form-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.input {
-  flex: 1;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: #0a0a0a;
-  color: white;
-  padding: 8px 10px;
-  font-size: 13px;
-}
-
-.input::placeholder {
-  opacity: 0.6;
-}
-
-.form-help {
-  font-size: 11px;
-  opacity: 0.7;
-}
-
-.status {
-  margin-top: 8px;
-  font-size: 12px;
-}
-
-.status.ok {
-  color: #4ade80;
-}
-
-.status.error {
-  color: #f97373;
-}
-
-.footer-note {
   margin-top: 20px;
-  font-size: 11px;
-  opacity: 0.6;
+  padding: 15px;
+  background: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-/* Responsive */
-@media (max-width: 800px) {
-  .card {
-    padding: 24px 18px;
-  }
-  .main-row {
-    flex-direction: column;
-  }
-  .badge-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
+button:hover {
+  opacity: 0.85;
 }
