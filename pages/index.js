@@ -1,140 +1,104 @@
-// pages/index.js
-
 export default function Home() {
   return (
-    <div className="page">
-      <div className="hero-card">
-        {/* Logo + titre */}
-        <div className="header-row">
-          <div className="logo-circle">CH</div>
-          <div className="logo-text">
-            <div className="logo-title">CarHunter</div>
-            <div className="logo-subtitle">SaaS de prospection auto par SMS</div>
+    <div className="min-h-screen flex items-center justify-center bg-black text-white px-4">
+      <div className="w-full max-w-4xl border border-hunterRed/40 rounded-3xl bg-gradient-to-br from-black via-hunterDark to-black p-8 md:p-12 shadow-2xl">
+        {/* Logo + badge */}
+        <header className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-hunterRed flex items-center justify-center text-sm font-bold">
+              CH
+            </div>
+            <div className="text-sm leading-tight">
+              <div className="font-semibold">CarHunter</div>
+              <div className="text-xs text-gray-400">
+                SaaS de prospection auto par SMS
+              </div>
+            </div>
           </div>
-        </div>
+          <span className="px-3 py-1 rounded-full text-xs border border-hunterRed/60 text-hunterRed">
+            NOUVEAU · AUTOMATISATION IA
+          </span>
+        </header>
 
-        <div className="badge-row">
-          <span className="badge">NOUVEAU · AUTOMATISATION IA</span>
-        </div>
-
-        {/* Bloc gauche : texte principal */}
-        <div className="content-row">
-          <div className="left-column">
-            <h1 className="hero-title">
+        <div className="grid md:grid-cols-2 gap-10 items-start">
+          {/* Bloc gauche : texte principal */}
+          <div>
+            <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">
               Tu ne cherches plus les voitures,
               <br />
-              <span className="text-red">tu les chasses.</span>
+              <span className="text-hunterRed">tu les chasses.</span>
             </h1>
 
-            <p className="hero-subtitle">
+            <p className="mt-4 text-sm md:text-base text-gray-300">
               CarHunter repère pour toi les meilleures annonces de voitures et
-              contacte automatiquement les vendeurs par SMS. Tu reçois seulement
-              les bons plans dans ton tableau de bord.
+              contacte automatiquement les vendeurs par SMS. Tu reçois
+              seulement les bons plans dans ton tableau de bord.
             </p>
 
-            <div className="cta-row">
-              <a href="#early-access" className="btn btn-primary">
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <button className="flex-1 bg-hunterRed hover:bg-red-700 transition rounded-full py-3 text-sm md:text-base font-semibold">
                 Demander un accès anticipé
-              </a>
-              <a href="#how-it-works" className="btn btn-secondary">
+              </button>
+              <button className="flex-1 border border-gray-700 hover:border-gray-500 transition rounded-full py-3 text-sm md:text-base">
                 Voir comment ça marche →
-              </a>
+              </button>
             </div>
 
-            <ul className="bullet-list">
-              <li>Scan auto des annonces (24h/24)</li>
-              <li>SMS pré-écrits qui donnent envie de répondre</li>
-              <li>Parfait pour achat-revente, garages, mandataires</li>
+            <ul className="mt-6 space-y-2 text-sm text-gray-300">
+              <li>• Scan auto des annonces (24h/24)</li>
+              <li>• SMS pré-écrits qui donnent envie de répondre</li>
+              <li>• Parfait pour achat-revente, garages, mandataires</li>
             </ul>
           </div>
 
-          {/* Bloc droit : simulation chiffres */}
-          <div className="right-column">
-            <div className="card-stats">
-              <h2 className="card-title">SIMULATION CARHUNTER</h2>
-              <p className="card-subtitle">32 vendeurs contactés aujourd&apos;hui</p>
-              <p className="card-example">
-                Exemple : recherche de Peugeot 208 &lt; 7 000 € autour de Bordeaux
-              </p>
+          {/* Bloc droit : simulation */}
+          <div className="bg-hunterPanel/80 border border-hunterRed/40 rounded-2xl p-5 text-sm">
+            <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+              Simulation CarHunter
+            </h2>
+            <p className="text-2xl font-bold">
+              32 vendeurs contactés <br />
+              <span className="text-sm font-normal text-gray-400">
+                aujourd&apos;hui
+              </span>
+            </p>
 
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <div className="stat-label">Taux de réponse</div>
-                  <div className="stat-value">54%</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-label">Deals trouvés</div>
-                  <div className="stat-value">5</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-label">Gain moyen / deal</div>
-                  <div className="stat-value">&gt; 650 €</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-label">Temps gagné</div>
-                  <div className="stat-value">&gt; 4 h / jour</div>
-                </div>
+            <p className="mt-3 text-xs text-gray-300">
+              Exemple : recherche de Peugeot 208 &lt; 7 000 € autour de Bordeaux
+            </p>
+
+            <div className="mt-4 grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <div className="text-gray-400">Taux de réponse</div>
+                <div className="text-lg font-semibold">54%</div>
               </div>
-
-              <p className="card-footer">
-                Interface en cours de développement. Cette page est une preview de la
-                version bêta de CarHunter.
-              </p>
+              <div>
+                <div className="text-gray-400">Deals trouvés</div>
+                <div className="text-lg font-semibold">5</div>
+              </div>
+              <div>
+                <div className="text-gray-400">Gain moyen / deal</div>
+                <div className="text-lg font-semibold">&gt; 650 €</div>
+              </div>
+              <div>
+                <div className="text-gray-400">Temps gagné</div>
+                <div className="text-lg font-semibold">&gt; 4 h / jour</div>
+              </div>
             </div>
+
+            <p className="mt-5 text-xs text-gray-400">
+              Interface en cours de développement. Cette page est une preview de
+              la version bêta de CarHunter.
+            </p>
           </div>
         </div>
 
-        {/* Section comment ça marche */}
-        <div id="how-it-works" className="section">
-          <h2>Comment ça marche ?</h2>
-          <ol className="steps-list">
-            <li>Tu définis le type de voiture que tu cherches (modèle, budget, région…).</li>
-            <li>CarHunter scanne les annonces et repère les bonnes opportunités.</li>
-            <li>Des SMS sont envoyés automatiquement aux vendeurs en ton nom.</li>
-            <li>Tu reçois les réponses et les meilleurs deals directement dans ton espace.</li>
-          </ol>
-        </div>
-
-        {/* Section early access */}
-        <div id="early-access" className="section">
-          <h2>Demander un accès anticipé</h2>
-          <p>
-            Laisse ton email et comment tu veux utiliser CarHunter. Tu seras prioritaire
-            quand la bêta sera ouverte.
-          </p>
-
-          <form className="early-form" onSubmit={(e) => e.preventDefault()}>
-            <div className="form-row">
-              <label>
-                Email
-                <input type="email" placeholder="tonemail@example.com" required />
-              </label>
-            </div>
-            <div className="form-row">
-              <label>
-                Comment tu veux utiliser CarHunter ?
-                <input
-                  type="text"
-                  placeholder="Achat-revente, garage, mandataire..."
-                  required
-                />
-              </label>
-            </div>
-            <div className="form-row">
-              <label>
-                Volume (ex : voitures / mois)
-                <input type="text" placeholder="Ex : 5 voitures / mois" />
-              </label>
-            </div>
-            <button type="submit" className="btn btn-primary full-width">
-              Je veux être sur la liste
-            </button>
-          </form>
-
-          <p className="disclaimer">
-            (Formulaire encore en mode démo – on branchera la vraie base de données ensuite.)
-          </p>
-        </div>
+        {/* Bas de page */}
+        <p className="mt-8 text-[11px] text-gray-500 text-center">
+          Intéressé par tester CarHunter en avant-première ? Ajoute simplement
+          ton email dans ta bio ou envoie un message à ton futur site quand il
+          sera live — tu pourras brancher ici un vrai formulaire plus tard.
+        </p>
       </div>
     </div>
   );
