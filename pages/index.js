@@ -1,172 +1,141 @@
-import { useState } from "react";
+// pages/index.js
 
 export default function Home() {
-  const [email, setEmail] = useState("");
-  const [usage, setUsage] = useState("");
-  const [volume, setVolume] = useState("");
-  const [status, setStatus] = useState(null);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("loading");
-
-    try {
-      const res = await fetch("/api/early-access", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, usage, volume }),
-      });
-
-      if (res.ok) {
-        setStatus("ok");
-        setEmail("");
-        setUsage("");
-        setVolume("");
-      } else {
-        setStatus("error");
-      }
-    } catch (err) {
-      setStatus("error");
-    }
-  };
-
   return (
     <div className="page">
-      <main className="card">
+      <div className="hero-card">
+        {/* Logo + titre */}
         <div className="header-row">
-          <div className="logo">
-            <div className="logo-badge">CH</div>
-            <div>
-              <div>CarHunter</div>
-              <div style={{ fontSize: 11, color: "#b3b3b3" }}>
-                SaaS de prospection auto par SMS
-              </div>
-            </div>
+          <div className="logo-circle">CH</div>
+          <div className="logo-text">
+            <div className="logo-title">CarHunter</div>
+            <div className="logo-subtitle">SaaS de prospection auto par SMS</div>
           </div>
-          <div className="badge">Nouveau · Automatisation IA</div>
         </div>
 
-        <div className="main">
-          {/* Colonne gauche */}
-          <section>
-            <h1>
+        <div className="badge-row">
+          <span className="badge">NOUVEAU · AUTOMATISATION IA</span>
+        </div>
+
+        {/* Bloc gauche : texte principal */}
+        <div className="content-row">
+          <div className="left-column">
+            <h1 className="hero-title">
               Tu ne cherches plus les voitures,
               <br />
-              <span className="highlight">tu les chasses.</span>
+              <span className="text-red">tu les chasses.</span>
             </h1>
-            <p>
+
+            <p className="hero-subtitle">
               CarHunter repère pour toi les meilleures annonces de voitures et
               contacte automatiquement les vendeurs par SMS. Tu reçois seulement
               les bons plans dans ton tableau de bord.
             </p>
 
-            <button className="primary-btn" onClick={handleSubmit}>
-              Demander un accès anticipé
-            </button>
+            <div className="cta-row">
+              <a href="#early-access" className="btn btn-primary">
+                Demander un accès anticipé
+              </a>
+              <a href="#how-it-works" className="btn btn-secondary">
+                Voir comment ça marche →
+              </a>
+            </div>
 
-            <button
-              className="secondary-btn"
-              onClick={() => {
-                const el = document.getElementById("how");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              Voir comment ça marche →
-            </button>
-
-            <ul className="list">
-              <li>• Scan auto des annonces (24h/24)</li>
-              <li>• SMS pré-écrits qui donnent envie de répondre</li>
-              <li>• Parfait pour achat-revente, garages, mandataires</li>
+            <ul className="bullet-list">
+              <li>Scan auto des annonces (24h/24)</li>
+              <li>SMS pré-écrits qui donnent envie de répondre</li>
+              <li>Parfait pour achat-revente, garages, mandataires</li>
             </ul>
-          </section>
+          </div>
 
-          {/* Colonne droite */}
-          <aside className="right-card">
-            <h3>Simulation CarHunter</h3>
-            <p style={{ marginBottom: 10 }}>
-              <strong>32 vendeurs contactés</strong>
-              <br />
-              aujourd&apos;hui
-            </p>
-            <p>
-              Exemple : recherche de Peugeot 208 &lt; 7 000 € autour de Bordeaux.
-            </p>
-            <p style={{ marginTop: 10 }}>
-              Taux de réponse : <strong>54%</strong>
-              <br />
-              Deals trouvés : <strong>5</strong>
-              <br />
-              Gain moyen / deal : <strong>+ 650 €</strong>
-              <br />
-              Temps gagné : <strong>&gt; 4 h / jour</strong>
-            </p>
-          </aside>
+          {/* Bloc droit : simulation chiffres */}
+          <div className="right-column">
+            <div className="card-stats">
+              <h2 className="card-title">SIMULATION CARHUNTER</h2>
+              <p className="card-subtitle">32 vendeurs contactés aujourd&apos;hui</p>
+              <p className="card-example">
+                Exemple : recherche de Peugeot 208 &lt; 7 000 € autour de Bordeaux
+              </p>
+
+              <div className="stats-grid">
+                <div className="stat-item">
+                  <div className="stat-label">Taux de réponse</div>
+                  <div className="stat-value">54%</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-label">Deals trouvés</div>
+                  <div className="stat-value">5</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-label">Gain moyen / deal</div>
+                  <div className="stat-value">&gt; 650 €</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-label">Temps gagné</div>
+                  <div className="stat-value">&gt; 4 h / jour</div>
+                </div>
+              </div>
+
+              <p className="card-footer">
+                Interface en cours de développement. Cette page est une preview de la
+                version bêta de CarHunter.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Formulaire */}
-        <section className="form-section" id="how">
-          <h3 style={{ fontSize: 14, marginBottom: 6 }}>Demander un accès anticipé</h3>
+        {/* Section comment ça marche */}
+        <div id="how-it-works" className="section">
+          <h2>Comment ça marche ?</h2>
+          <ol className="steps-list">
+            <li>Tu définis le type de voiture que tu cherches (modèle, budget, région…).</li>
+            <li>CarHunter scanne les annonces et repère les bonnes opportunités.</li>
+            <li>Des SMS sont envoyés automatiquement aux vendeurs en ton nom.</li>
+            <li>Tu reçois les réponses et les meilleurs deals directement dans ton espace.</li>
+          </ol>
+        </div>
+
+        {/* Section early access */}
+        <div id="early-access" className="section">
+          <h2>Demander un accès anticipé</h2>
           <p>
-            Laisse ton email et comment tu veux utiliser CarHunter. Tu seras
-            prioritaire quand la bêta sera ouverte.
+            Laisse ton email et comment tu veux utiliser CarHunter. Tu seras prioritaire
+            quand la bêta sera ouverte.
           </p>
 
-          <form className="form-grid" onSubmit={handleSubmit}>
-            <div>
-              <label>Email</label>
-              <input
-                type="email"
-                placeholder="tonemail@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+          <form className="early-form" onSubmit={(e) => e.preventDefault()}>
+            <div className="form-row">
+              <label>
+                Email
+                <input type="email" placeholder="tonemail@example.com" required />
+              </label>
             </div>
-
-            <div>
-              <label>Comment tu veux utiliser CarHunter ?</label>
-              <input
-                type="text"
-                placeholder="Achat-revente, garage, mandataire..."
-                value={usage}
-                onChange={(e) => setUsage(e.target.value)}
-              />
+            <div className="form-row">
+              <label>
+                Comment tu veux utiliser CarHunter ?
+                <input
+                  type="text"
+                  placeholder="Achat-revente, garage, mandataire..."
+                  required
+                />
+              </label>
             </div>
-
-            <div>
-              <label>Volume (ex : voitures / mois)</label>
-              <input
-                type="text"
-                placeholder="Ex : 5 voitures / mois"
-                value={volume}
-                onChange={(e) => setVolume(e.target.value)}
-              />
+            <div className="form-row">
+              <label>
+                Volume (ex : voitures / mois)
+                <input type="text" placeholder="Ex : 5 voitures / mois" />
+              </label>
             </div>
-
-            <div style={{ gridColumn: "1 / -1" }}>
-              <button type="submit" className="primary-btn">
-                Je veux être sur la liste
-              </button>
-              {status === "loading" && (
-                <div className="status">Envoi en cours...</div>
-              )}
-              {status === "ok" && (
-                <div className="status ok">
-                  Merci ! Tu es sur la liste d&apos;attente CarHunter.
-                </div>
-              )}
-              {status === "error" && (
-                <div className="status error">
-                  Oups, une erreur s&apos;est produite. Réessaie dans un instant.
-                </div>
-              )}
-            </div>
+            <button type="submit" className="btn btn-primary full-width">
+              Je veux être sur la liste
+            </button>
           </form>
-        </section>
-      </main>
+
+          <p className="disclaimer">
+            (Formulaire encore en mode démo – on branchera la vraie base de données ensuite.)
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
