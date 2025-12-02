@@ -1,146 +1,197 @@
+// pages/index.js
 import { useState } from "react";
 
 export default function Home() {
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("Test CarHunter : premier SMS automatique !");
-  const [status, setStatus] = useState(null); // {type: "ok" | "error", text: string}
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [useCase, setUseCase] = useState("");
+  const [volume, setVolume] = useState("");
+  const [status, setStatus] = useState(null);
 
-  async function handleSend(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus(null);
-    setLoading(true);
+    setStatus("loading");
+
     try {
-      const res = await fetch("/api/send-sms", {
+      const res = await fetch("/api/early-access", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ to: phone, message }),
+        body: JSON.stringify({ email, useCase, volume }),
       });
-      const data = await res.json();
+
       if (res.ok) {
-        setStatus({ type: "ok", text: "SMS envoyé (ou accepté par Twilio) ✅" });
+        setStatus("ok");
+        setEmail("");
+        setUseCase("");
+        setVolume("");
       } else {
-        setStatus({ type: "error", text: data.error || "Erreur côté serveur" });
+        setStatus("error");
       }
     } catch (err) {
-      setStatus({ type: "error", text: "Impossible d'appeler l'API." });
-    } finally {
-      setLoading(false);
+      console.error(err);
+      setStatus("error");
     }
-  }
+  };
+
+  const scrollToForm = () => {
+    const el = document.getElementById("early-access-form");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <main className="main">
-      <div className="card">
-        <div className="badge-row">
-          <div className="logo">
-            <div className="logo-circle">CH</div>
-            <div>
-              <div className="logo-text">CarHunter</div>
-              <div className="logo-sub">SaaS de prospection auto par SMS</div>
-            </div>
+    <div className="min-h-screen bg-black text-white flex flex-col items-center px-4 py-10">
+      <div className="w-full max-w-3xl border border-red-700 rounded-3xl p-8 bg-gradient-to-b from-black to-[#140000] shadow-2xl">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-xs font-bold">
+            CH
           </div>
-          <div className="badge">Nouveau · Automatisation IA</div>
+          <div>
+            <p className="font-semibold text-sm">CarHunter</p>
+            <p className="text-xs text-gray-400">
+              SaaS de prospection auto par SMS
+            </p>
+          </div>
         </div>
 
-        <h1 className="title">
+        <div className="mb-4">
+          <span className="text-xs px-2 py-1 rounded-full border border-red-600 text-red-400">
+            NOUVEAU · AUTOMATISATION IA
+          </span>
+        </div>
+
+        <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
           Tu ne cherches plus les voitures,
           <br />
-          <span className="red">tu les chasses.</span>
+          <span className="text-red-500">tu les chasses.</span>
         </h1>
 
-        <p className="subtitle">
+        <p className="text-gray-300 mb-6 max-w-xl text-sm md:text-base">
           CarHunter repère pour toi les meilleures annonces de voitures et
           contacte automatiquement les vendeurs par SMS. Tu reçois seulement
           les bons plans dans ton tableau de bord.
         </p>
 
-        <div className="main-row">
-          <div className="left">
-            <button className="btn-primary">
-              Demander un accès anticipé
-            </button>
-            <button className="btn-secondary">
-              Voir comment ça marche →
-            </button>
+        <div className="flex flex-col md:flex-row gap-4 mb-8">
+          <button
+            onClick={scrollToForm}
+            className="flex-1 bg-red-600 hover:bg-red-700 transition px-6 py-3 rounded-full font-semibold text-sm md:text-base"
+          >
+            Demander un accès anticipé
+          </button>
 
-            <ul className="bullets">
-              <li>Scan auto des annonces (24h/24)</li>
-              <li>SMS pré-écrits qui donnent envie de répondre</li>
-              <li>Parfait pour achat-revente, garages, mandataires</li>
-            </ul>
-          </div>
-
-          <div className="right">
-            <div className="right-card">
-              <div className="right-title">SIMULATION CARHUNTER</div>
-              <div className="right-sub">
-                32 vendeurs contactés aujourd&apos;hui
-                <br />
-                Exemple : recherche de Peugeot 208 &lt; 7 000 € autour de Bordeaux
-              </div>
-
-              <div className="stat-row">
-                <span className="stat-label">Taux de réponse</span>
-                <span className="stat-value">54%</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">Deals trouvés</span>
-                <span className="stat-value">5</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">Gain moyen / deal</span>
-                <span className="stat-value">&gt; 650 €</span>
-              </div>
-              <div className="stat-row">
-                <span className="stat-label">Temps gagné</span>
-                <span className="stat-value">&gt; 4 h / jour</span>
-              </div>
-
-              <div className="form-block">
-                <div className="form-title">Tester l&apos;envoi de SMS (debug)</div>
-                <form onSubmit={handleSend}>
-                  <div className="form-row">
-                    <input
-                      className="input"
-                      placeholder="+33 ton numéro vérifié Twilio"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="form-row">
-                    <input
-                      className="input"
-                      placeholder="Message"
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                    />
-                  </div>
-                  <button className="btn-primary" type="submit" disabled={loading}>
-                    {loading ? "Envoi..." : "Envoyer un SMS de test"}
-                  </button>
-                </form>
-                <p className="form-help">
-                  ⚠️ En mode compte d&apos;essai Twilio, tu ne peux envoyer des SMS
-                  qu&apos;à des numéros vérifiés.
-                </p>
-
-                {status && (
-                  <div className={`status ${status.type === "ok" ? "ok" : "error"}`}>
-                    {status.text}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          <button
+            onClick={() => {
+              const el = document.getElementById("how-it-works");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="flex-1 border border-gray-600 hover:border-white transition px-6 py-3 rounded-full text-sm md:text-base"
+          >
+            Voir comment ça marche →
+          </button>
         </div>
 
-        <p className="footer-note">
-          Interface en cours de développement. Cette page est une pré-version de la
-          future app CarHunter.
-        </p>
+        <ul className="text-sm text-gray-300 space-y-1 mb-8">
+          <li>• Scan auto des annonces (24h/24)</li>
+          <li>• SMS pré-écrits qui donnent envie de répondre</li>
+          <li>• Parfait pour achat-revente, garages, mandataires</li>
+        </ul>
+
+        <div className="mt-6 text-xs text-gray-500">
+          Intéressé par tester CarHunter en avant-première ? Ajoute simplement
+          ton email dans le bloc en bas de la page — tu seras prévenu quand la
+          version bêta sera prête.
+        </div>
       </div>
-    </main>
+
+      {/* SECTION COMMENT ÇA MARCHE */}
+      <section
+        id="how-it-works"
+        className="w-full max-w-3xl mt-12 bg-[#080808] border border-gray-800 rounded-3xl p-6"
+      >
+        <h2 className="text-xl font-semibold mb-4">Comment ça marche ?</h2>
+        <ol className="list-decimal list-inside text-sm text-gray-300 space-y-2">
+          <li>Tu définis le type de voiture que tu cherches.</li>
+          <li>CarHunter scanne les annonces et repère les bonnes opportunités.</li>
+          <li>Des SMS sont envoyés automatiquement aux vendeurs.</li>
+          <li>
+            Tu reçois les réponses et les meilleurs deals directement dans ton
+            espace.
+          </li>
+        </ol>
+      </section>
+
+      {/* FORMULAIRE D’ACCÈS ANTICIPÉ */}
+      <section
+        id="early-access-form"
+        className="w-full max-w-3xl mt-12 bg-[#080808] border border-red-800 rounded-3xl p-6 mb-10"
+      >
+        <h2 className="text-xl font-semibold mb-4">
+          Demander un accès anticipé
+        </h2>
+        <p className="text-sm text-gray-300 mb-4">
+          Laisse ton email et comment tu veux utiliser CarHunter. Tu seras
+          prioritaire quand la bêta sera ouverte.
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm mb-1">Email</label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-lg px-3 py-2 bg-black border border-gray-700 focus:border-red-500 outline-none text-sm"
+              placeholder="tonemail@example.com"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm mb-1">
+              Comment tu veux utiliser CarHunter ?
+            </label>
+            <input
+              type="text"
+              value={useCase}
+              onChange={(e) => setUseCase(e.target.value)}
+              className="w-full rounded-lg px-3 py-2 bg-black border border-gray-700 focus:border-red-500 outline-none text-sm"
+              placeholder="Achat-revente, garage, mandataire..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm mb-1">
+              Volume (ex : voitures / mois)
+            </label>
+            <input
+              type="text"
+              value={volume}
+              onChange={(e) => setVolume(e.target.value)}
+              className="w-full rounded-lg px-3 py-2 bg-black border border-gray-700 focus:border-red-500 outline-none text-sm"
+              placeholder="Ex : 5 voitures / mois"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={status === "loading"}
+            className="mt-2 bg-red-600 hover:bg-red-700 disabled:bg-red-900 transition px-6 py-2 rounded-full font-semibold text-sm"
+          >
+            {status === "loading" ? "Envoi..." : "Je veux être sur la liste"}
+          </button>
+
+          {status === "ok" && (
+            <p className="text-green-400 text-sm mt-2">
+              Merci ! Tu es bien enregistré, tu seras prévenu dès que la bêta
+              sera prête.
+            </p>
+          )}
+          {status === "error" && (
+            <p className="text-red-400 text-sm mt-2">
+              Oups, une erreur est survenue. Réessaie dans quelques secondes.
+            </p>
+          )}
+        </form>
+      </section>
+    </div>
   );
 }
