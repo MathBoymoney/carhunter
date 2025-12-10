@@ -1,50 +1,50 @@
-// pages/api/search-cars.js
+import axios from "axios";
+import cheerio from "cheerio";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", ["POST"]);
-    return res.status(405).json({ message: "Méthode non autorisée" });
-  }
+  try {
+    const { query } = req.body;
 
-  const { brand, model, maxPrice, region } = req.body;
-
-  // Ici, plus tard, tu mettras le VRAI scraping Leboncoin / LaCentrale
-  // (axios + cheerio ou un script séparé pour respecter leurs règles).
-  // Pour l'instant on renvoie des données factices pour tester le SaaS.
-
-  const fakeResults = [
-    {
-      id: 1,
-      title: "Peugeot 208 1.2 PureTech",
-      price: 6500,
-      km: 98000,
-      year: 2016,
-      source: "Leboncoin",
-      url: "https://www.leboncoin.fr/voitures/peugeot-208-exemple"
-    },
-    {
-      id: 2,
-      title: "Renault Clio 4 TCe 90",
-      price: 5900,
-      km: 110000,
-      year: 2015,
-      source: "LaCentrale",
-      url: "https://www.lacentrale.fr/auto/renault-clio-exemple"
-    },
-    {
-      id: 3,
-      title: "Toyota Yaris 1.0 VVT-i",
-      price: 5200,
-      km: 120000,
-      year: 2014,
-      source: "Leboncoin",
-      url: "https://www.leboncoin.fr/voitures/toyota-yaris-exemple"
+    if (!query) {
+      return res.status(400).json({ error: "Requête manquante" });
     }
-  ];
 
-  // On répond avec les faux résultats
-  return res.status(200).json({
-    criteria: { brand, model, maxPrice, region },
-    results: fakeResults,
-  });
+    const SCRAPER_API = process.env.SCRAPER_API;
+
+    const searchUrl = `https://www.leboncoin.fr/recherche?category=2&text=${encodeURIComponent(
+      query
+    )}`;
+
+    const url = `http://api.scraperapi.com?api_key=${SCRAPER_API}&url=${encodeURIComponent(
+      searchUrl
+    )}`;
+
+    const response = await axios.get(url);
+    const html = response.data;
+    const $ = cheerio.load(html);
+
+    const results = [];
+
+    $("a[data-qa-id='aditem_container']").each((i, elem) => {
+      const title = $(elem).find("p[data-qa-id='aditem_title']").text().trim();
+      const price = $(elem)
+        .find("span[data-qa-id='aditem_price']")
+        .text()
+        .trim();
+      const location = $(elem)
+        .find("p[data-qa-id='aditem_location']")
+        .text()
+        .trim();
+
+      const link =
+        "https://www.leboncoin.fr" + $(elem).attr("href");
+
+      results.push({ title, price, location, link });
+    });
+
+    res.status(200).json({ results });
+  } catch (error) {
+    console.error("Scraping error:", error);
+    res.status(500).json({ error: "Erreur scraping" });
+  }
 }
