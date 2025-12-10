@@ -1,46 +1,30 @@
 import { MongoClient } from "mongodb";
 
-let cachedClient = null;
-
-async function connectToDatabase() {
-  if (cachedClient) return cachedClient;
-
-  const uri = process.env.MONGODB; // ta variable d'environnement sur Vercel
-  if (!uri) {
-    throw new Error("MONGODB env var not set");
-  }
-
-  const client = await MongoClient.connect(uri);
-  cachedClient = client;
-  return client;
-}
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, error: "Method not allowed" });
-  }
+  if (req.method !== "POST")
+    return res.status(405).json({ error: "Méthode non autorisée" });
 
-  const { email, usage, volume } = req.body || {};
+  const { email, usage, volume } = req.body;
 
-  if (!email || !usage) {
-    return res.status(400).json({ ok: false, error: "Missing fields" });
-  }
+  if (!email)
+    return res.status(400).json({ error: "Email requis" });
 
   try {
-    const client = await connectToDatabase();
-    const db = client.db(); // la DB indiquée dans ton URI (carhunter)
-    const collection = db.collection("leads");
+    const client = await MongoClient.connect(process.env.MONGODB);
+    const db = client.db("carhunter");
 
-    await collection.insertOne({
+    await db.collection("leads").insertOne({
       email,
       usage,
-      volume: volume || null,
-      createdAt: new Date(),
+      volume,
+      date: new Date()
     });
 
-    return res.status(200).json({ ok: true });
-  } catch (err) {
-    console.error("Mongo error", err);
-    return res.status(500).json({ ok: false, error: "Database error" });
+    client.close();
+
+    return res.status(200).json({ success: true });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ error: "Erreur serveur" });
   }
 }
