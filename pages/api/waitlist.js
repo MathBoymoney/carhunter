@@ -1,25 +1,38 @@
 // pages/api/waitlist.js
-import clientPromise from "../../lib/mongodb";
+import { MongoClient } from "mongodb";
+
+let cachedClient = null;
+let cachedDb = null;
+
+async function connectToDatabase() {
+  if (cachedClient && cachedDb) {
+    return { client: cachedClient, db: cachedDb };
+  }
+
+  const client = await MongoClient.connect(process.env.MONGODB);
+  const db = client.db("carhunter"); // nom de ta base
+
+  cachedClient = client;
+  cachedDb = db;
+
+  return { client, db };
+}
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, message: "Méthode non autorisée" });
+    return res.status(405).json({ ok: false, error: "Méthode non autorisée" });
   }
 
   const { email, usage, volume } = req.body;
 
-  if (!email || !email.includes("@")) {
-    return res
-      .status(400)
-      .json({ ok: false, message: "Email invalide ou manquant" });
+  if (!email) {
+    return res.status(400).json({ ok: false, error: "Email requis" });
   }
 
   try {
-    const client = await clientPromise;
-    const db = client.db("carhunter"); // nom de ta DB
-    const collection = db.collection("leads"); // nom de la collection
+    const { db } = await connectToDatabase();
 
-    await collection.insertOne({
+    await db.collection("leads").insertOne({
       email,
       usage: usage || "",
       volume: volume || "",
@@ -28,9 +41,9 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ ok: true });
   } catch (err) {
-    console.error("Erreur MongoDB", err);
+    console.error("Erreur waitlist:", err);
     return res
       .status(500)
-      .json({ ok: false, message: "Erreur serveur, réessaie plus tard." });
+      .json({ ok: false, error: "Erreur serveur lors de l'enregistrement" });
   }
 }
